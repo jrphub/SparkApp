@@ -1,0 +1,15 @@
+.classpath
+.project
+.settings/
+SparkCore/target
+SparkCore/.classpath
+SparkCore/.project
+SparkCore/.settings/
+SparkUber/target
+SparkUber/.classpath
+SparkUber/.project
+SparkUber/.settings/
+SparkLauncher/target
+SparkLauncher/.classpath
+SparkLauncher/.project
+SparkLauncher/.settings
