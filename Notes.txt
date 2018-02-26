@@ -1,0 +1,217 @@
+Problem :
+
+Error: A JNI error has occurred, please check your installation and try again
+Exception in thread "main" java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+	at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:330)
+	at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:263)
+	at java.util.jar.JarVerifier.processEntry(JarVerifier.java:318)
+	at java.util.jar.JarVerifier.update(JarVerifier.java:230)
+	at java.util.jar.JarFile.initializeVerifier(JarFile.java:383)
+	at java.util.jar.JarFile.getInputStream(JarFile.java:450)
+	at sun.misc.URLClassPath$JarLoader$2.getInputStream(URLClassPath.java:977)
+	at sun.misc.Resource.cachedInputStream(Resource.java:77)
+	at sun.misc.Resource.getByteBuffer(Resource.java:160)
+	at java.net.URLClassLoader.defineClass(URLClassLoader.java:454)
+	at java.net.URLClassLoader.access$100(URLClassLoader.java:73)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:368)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:362)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:361)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:338)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:495)
+	
+	
+Solution : https://stackoverflow.com/questions/999489/invalid-signature-file-when-attempting-to-run-a-jar
+
+For those who got this error when trying to create an uber-jar with maven-shade-plugin, the solution is to exclude manifest signature files by adding the following lines to the plugin configuration:
+
+<configuration>
+    <filters>
+        <filter>
+            <artifact>*:*</artifact>
+            <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+            </excludes>
+        </filter>
+    </filters>
+    <!-- Additional configuration. -->
+</configuration>
+
+
+=======================================================================================================
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+18/02/25 21:22:19 INFO SparkContext: Running Spark version 2.1.0
+18/02/25 21:22:19 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+18/02/25 21:22:20 WARN SparkConf: spark.master yarn-client is deprecated in Spark 2.0+, please instead use "yarn" with specified deploy mode.
+18/02/25 21:22:20 WARN Utils: Your hostname, iamjrp resolves to a loopback address: 127.0.0.1; using 192.168.0.104 instead (on interface wlo1)
+18/02/25 21:22:20 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+18/02/25 21:22:20 INFO SecurityManager: Changing view acls to: jrp,huser
+18/02/25 21:22:20 INFO SecurityManager: Changing modify acls to: jrp,huser
+18/02/25 21:22:20 INFO SecurityManager: Changing view acls groups to: 
+18/02/25 21:22:20 INFO SecurityManager: Changing modify acls groups to: 
+18/02/25 21:22:20 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(jrp, huser); groups with view permissions: Set(); users  with modify permissions: Set(jrp, huser); groups with modify permissions: Set()
+18/02/25 21:22:20 INFO Utils: Successfully started service 'sparkDriver' on port 34001.
+18/02/25 21:22:20 INFO SparkEnv: Registering MapOutputTracker
+18/02/25 21:22:20 INFO SparkEnv: Registering BlockManagerMaster
+18/02/25 21:22:20 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+18/02/25 21:22:20 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+18/02/25 21:22:20 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-35a2ba25-bebd-4680-90d0-06938e0c1630
+18/02/25 21:22:20 INFO MemoryStore: MemoryStore started with capacity 876.0 MB
+18/02/25 21:22:20 INFO SparkEnv: Registering OutputCommitCoordinator
+18/02/25 21:22:21 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+18/02/25 21:22:21 INFO SparkUI: Bound SparkUI to 0.0.0.0, and started at http://192.168.0.104:4040
+18/02/25 21:22:21 INFO RMProxy: Connecting to ResourceManager at localhost/127.0.0.1:8032
+18/02/25 21:22:22 INFO Client: Requesting a new application from cluster with 1 NodeManagers
+18/02/25 21:22:22 INFO Client: Verifying our application has not requested more than the maximum memory capability of the cluster (8192 MB per container)
+18/02/25 21:22:22 INFO Client: Will allocate AM container, with 896 MB memory including 384 MB overhead
+18/02/25 21:22:22 INFO Client: Setting up container launch context for our AM
+18/02/25 21:22:22 INFO Client: Setting up the launch environment for our AM container
+18/02/25 21:22:22 INFO Client: Preparing resources for our AM container
+18/02/25 21:22:23 INFO Client: Source and destination file systems are the same. Not copying hdfs://localhost:9000/user/huser/wordcountHdfs/spark-uber.jar
+18/02/25 21:22:23 INFO Client: Uploading resource file:/tmp/spark-e5681b1f-e28e-4fb1-9413-164becd768e6/__spark_conf__3376790631866500747.zip -> hdfs://localhost:9000/user/huser/.sparkStaging/application_1519486483975_0023/__spark_conf__.zip
+18/02/25 21:22:25 INFO SecurityManager: Changing view acls to: jrp,huser
+18/02/25 21:22:25 INFO SecurityManager: Changing modify acls to: jrp,huser
+18/02/25 21:22:25 INFO SecurityManager: Changing view acls groups to: 
+18/02/25 21:22:25 INFO SecurityManager: Changing modify acls groups to: 
+18/02/25 21:22:25 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(jrp, huser); groups with view permissions: Set(); users  with modify permissions: Set(jrp, huser); groups with modify permissions: Set()
+18/02/25 21:22:25 INFO Client: Submitting application application_1519486483975_0023 to ResourceManager
+18/02/25 21:22:25 INFO YarnClientImpl: Submitted application application_1519486483975_0023 to ResourceManager at localhost/127.0.0.1:8032
+18/02/25 21:22:25 INFO SchedulerExtensionServices: Starting Yarn extension services with app application_1519486483975_0023 and attemptId None
+18/02/25 21:22:26 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:26 INFO Client: 
+	 client token: N/A
+	 diagnostics: N/A
+	 ApplicationMaster host: N/A
+	 ApplicationMaster RPC port: -1
+	 queue: default
+	 start time: 1519573945582
+	 final status: UNDEFINED
+	 tracking URL: http://localhost:8088/proxy/application_1519486483975_0023/
+	 user: huser
+18/02/25 21:22:27 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:28 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:29 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:30 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:31 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:32 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:33 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:34 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:35 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:36 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:37 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:38 INFO YarnSchedulerBackend$YarnSchedulerEndpoint: ApplicationMaster registered as NettyRpcEndpointRef(null)
+18/02/25 21:22:38 INFO YarnClientSchedulerBackend: Add WebUI Filter. org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter, Map(PROXY_HOST -> localhost, PROXY_URI_BASE -> http://localhost:8088/proxy/application_1519486483975_0023), /proxy/application_1519486483975_0023
+18/02/25 21:22:38 INFO JettyUtils: Adding filter: org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter
+18/02/25 21:22:38 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:39 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:40 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:41 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:42 INFO YarnSchedulerBackend$YarnSchedulerEndpoint: ApplicationMaster registered as NettyRpcEndpointRef(null)
+18/02/25 21:22:42 INFO YarnClientSchedulerBackend: Add WebUI Filter. org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter, Map(PROXY_HOST -> localhost, PROXY_URI_BASE -> http://localhost:8088/proxy/application_1519486483975_0023), /proxy/application_1519486483975_0023
+18/02/25 21:22:42 INFO JettyUtils: Adding filter: org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter
+18/02/25 21:22:42 INFO Client: Application report for application_1519486483975_0023 (state: ACCEPTED)
+18/02/25 21:22:43 INFO Client: Application report for application_1519486483975_0023 (state: RUNNING)
+18/02/25 21:22:43 INFO Client: 
+	 client token: N/A
+	 diagnostics: N/A
+	 ApplicationMaster host: 192.168.0.104
+	 ApplicationMaster RPC port: 0
+	 queue: default
+	 start time: 1519573945582
+	 final status: UNDEFINED
+	 tracking URL: http://localhost:8088/proxy/application_1519486483975_0023/
+	 user: huser
+18/02/25 21:22:43 INFO YarnClientSchedulerBackend: Application application_1519486483975_0023 has started running.
+18/02/25 21:22:43 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37003.
+18/02/25 21:22:43 INFO NettyBlockTransferService: Server created on 192.168.0.104:37003
+18/02/25 21:22:43 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+18/02/25 21:22:43 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 192.168.0.104, 37003, None)
+18/02/25 21:22:44 INFO BlockManagerMasterEndpoint: Registering block manager 192.168.0.104:37003 with 876.0 MB RAM, BlockManagerId(driver, 192.168.0.104, 37003, None)
+18/02/25 21:22:44 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 192.168.0.104, 37003, None)
+18/02/25 21:22:44 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 192.168.0.104, 37003, None)
+18/02/25 21:22:45 INFO Client: Deleted staging directory hdfs://localhost:9000/user/huser/.sparkStaging/application_1519486483975_0023
+18/02/25 21:22:45 ERROR YarnClientSchedulerBackend: Yarn application has already exited with state FAILED!
+18/02/25 21:22:45 INFO SparkUI: Stopped Spark web UI at http://192.168.0.104:4040
+18/02/25 21:22:45 ERROR TransportClient: Failed to send RPC 7922371181905592546 to /192.168.0.104:37518: java.nio.channels.ClosedChannelException
+java.nio.channels.ClosedChannelException
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(...)(Unknown Source)
+18/02/25 21:22:45 ERROR YarnSchedulerBackend$YarnSchedulerEndpoint: Sending RequestExecutors(0,0,Map()) to AM was unsuccessful
+java.io.IOException: Failed to send RPC 7922371181905592546 to /192.168.0.104:37518: java.nio.channels.ClosedChannelException
+	at org.apache.spark.network.client.TransportClient$3.operationComplete(TransportClient.java:249)
+	at org.apache.spark.network.client.TransportClient$3.operationComplete(TransportClient.java:233)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:514)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:488)
+	at io.netty.util.concurrent.DefaultPromise.access$000(DefaultPromise.java:34)
+	at io.netty.util.concurrent.DefaultPromise$1.run(DefaultPromise.java:438)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:408)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:455)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:140)
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.nio.channels.ClosedChannelException
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(...)(Unknown Source)
+18/02/25 21:22:45 INFO SchedulerExtensionServices: Stopping SchedulerExtensionServices
+(serviceOption=None,
+ services=List(),
+ started=false)
+18/02/25 21:22:45 ERROR Utils: Uncaught exception in thread Yarn application state monitor
+org.apache.spark.SparkException: Exception thrown in awaitResult
+	at org.apache.spark.rpc.RpcTimeout$$anonfun$1.applyOrElse(RpcTimeout.scala:77)
+	at org.apache.spark.rpc.RpcTimeout$$anonfun$1.applyOrElse(RpcTimeout.scala:75)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:36)
+	at org.apache.spark.rpc.RpcTimeout$$anonfun$addMessageIfTimeout$1.applyOrElse(RpcTimeout.scala:59)
+	at org.apache.spark.rpc.RpcTimeout$$anonfun$addMessageIfTimeout$1.applyOrElse(RpcTimeout.scala:59)
+	at scala.PartialFunction$OrElse.apply(PartialFunction.scala:167)
+	at org.apache.spark.rpc.RpcTimeout.awaitResult(RpcTimeout.scala:83)
+	at org.apache.spark.scheduler.cluster.CoarseGrainedSchedulerBackend.requestTotalExecutors(CoarseGrainedSchedulerBackend.scala:512)
+	at org.apache.spark.scheduler.cluster.YarnSchedulerBackend.stop(YarnSchedulerBackend.scala:93)
+	at org.apache.spark.scheduler.cluster.YarnClientSchedulerBackend.stop(YarnClientSchedulerBackend.scala:151)
+	at org.apache.spark.scheduler.TaskSchedulerImpl.stop(TaskSchedulerImpl.scala:467)
+	at org.apache.spark.scheduler.DAGScheduler.stop(DAGScheduler.scala:1588)
+	at org.apache.spark.SparkContext$$anonfun$stop$8.apply$mcV$sp(SparkContext.scala:1826)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1283)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:1825)
+	at org.apache.spark.scheduler.cluster.YarnClientSchedulerBackend$MonitorThread.run(YarnClientSchedulerBackend.scala:108)
+Caused by: java.io.IOException: Failed to send RPC 7922371181905592546 to /192.168.0.104:37518: java.nio.channels.ClosedChannelException
+	at org.apache.spark.network.client.TransportClient$3.operationComplete(TransportClient.java:249)
+	at org.apache.spark.network.client.TransportClient$3.operationComplete(TransportClient.java:233)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:514)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:488)
+	at io.netty.util.concurrent.DefaultPromise.access$000(DefaultPromise.java:34)
+	at io.netty.util.concurrent.DefaultPromise$1.run(DefaultPromise.java:438)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:408)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:455)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$2.run(SingleThreadEventExecutor.java:140)
+	at io.netty.util.concurrent.DefaultThreadFactory$DefaultRunnableDecorator.run(DefaultThreadFactory.java:144)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: java.nio.channels.ClosedChannelException
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(...)(Unknown Source)
+18/02/25 21:22:45 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+18/02/25 21:22:46 INFO MemoryStore: MemoryStore cleared
+18/02/25 21:22:46 INFO BlockManager: BlockManager stopped
+18/02/25 21:22:46 INFO BlockManagerMaster: BlockManagerMaster stopped
+18/02/25 21:22:46 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+18/02/25 21:22:46 INFO SparkContext: Successfully stopped SparkContext
+18/02/25 21:22:46 ERROR SparkContext: Error initializing SparkContext.
+java.lang.IllegalArgumentException: requirement failed: Can only call getServletHandlers on a running MetricsSystem
+	at scala.Predef$.require(Predef.scala:224)
+	at org.apache.spark.metrics.MetricsSystem.getServletHandlers(MetricsSystem.scala:91)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:524)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:58)
+	at com.spark.core.WordCountHDFS.main(WordCountHDFS.java:31)
+18/02/25 21:22:46 INFO SparkContext: SparkContext already stopped.
+Exception in thread "main" java.lang.IllegalArgumentException: requirement failed: Can only call getServletHandlers on a running MetricsSystem
+	at scala.Predef$.require(Predef.scala:224)
+	at org.apache.spark.metrics.MetricsSystem.getServletHandlers(MetricsSystem.scala:91)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:524)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:58)
+	at com.spark.core.WordCountHDFS.main(WordCountHDFS.java:31)
+18/02/25 21:22:47 INFO ShutdownHookManager: Shutdown hook called
+18/02/25 21:22:47 INFO ShutdownHookManager: Deleting directory /tmp/spark-e5681b1f-e28e-4fb1-9413-164becd768e6
+
+
+===========================================================================================================
